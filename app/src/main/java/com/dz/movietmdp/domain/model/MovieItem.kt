@@ -4,5 +4,6 @@ data class MovieItem(
     val id: Int,
     val originalTitle: String,
     val voteAverage: Double,
-    val posterPath: String
+    val posterPath: String,
+    val releaseDate: String
 )

@@ -6,6 +6,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -38,16 +41,22 @@ fun MoviesScreen(
 ) {
     val state = viewModel.state.value
     Box(modifier = Modifier.fillMaxSize()) {
-        Column {
-            Header()
+        LazyColumn {
+            item {
+                Header()
+
+                LazyRow(modifier = Modifier.fillMaxSize()) {
+                    items(state.movies) { movie ->
+                        MovieItemUi(movieItem = movie)
+                    }
+                }
+            }
         }
 
         BottomNavigation(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(5.dp)
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 20.dp)
                 .background(color = MatrixDarkColor),
             viewModel = viewModel,
         )
@@ -71,9 +80,10 @@ fun Header() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(250.dp),
+            .height(250.dp)
+            .padding(5.dp),
     ) {
-        Card(shape = RoundedCornerShape(bottomStart = 30.dp,bottomEnd = 30.dp)) {
+        Card(shape = RoundedCornerShape(30.dp)) {
             Image(
                 painter = painterResource(id = R.drawable.media),
                 contentDescription = "",
@@ -113,6 +123,7 @@ fun BottomNavigation(
     val filterState = viewModel.filterState.value
     Column(modifier = modifier) {
         Divider()
+        Spacer(modifier = Modifier.height(5.dp))
         Row(
             modifier = modifier,
             horizontalArrangement = Arrangement.SpaceBetween

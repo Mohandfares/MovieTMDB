@@ -17,8 +17,6 @@ class MoviesViewModel @Inject constructor(
     private val moviesUseCase: GetMoviesUseCase
 ) : ViewModel() {
 
-
-
     private val _state = mutableStateOf<MoviesListState>(MoviesListState())
     val state: State<MoviesListState> = _state
 

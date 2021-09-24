@@ -1,5 +1,7 @@
 package com.dz.movietmdp.data.remote.dto
 
+import com.dz.movietmdp.common.Constants
+import com.dz.movietmdp.common.toDateFormat
 import com.dz.movietmdp.domain.model.MovieItem
 import com.google.gson.annotations.SerializedName
 
@@ -34,6 +36,7 @@ fun MovieItemDto.toMovieItem(): MovieItem =
     MovieItem(
         id = id,
         originalTitle = originalTitle,
-        posterPath = posterPath,
-        voteAverage = voteAverage
+        posterPath = "https://www.themoviedb.org/t/p/original$posterPath",
+        voteAverage = voteAverage,
+        releaseDate = releaseDate.toDateFormat()
     )

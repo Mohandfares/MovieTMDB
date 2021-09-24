@@ -14,6 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.dz.movietmdp.domain.model.MovieItem
+import com.dz.movietmdp.presentation.movies.components.MovieItemUi
 import com.dz.movietmdp.presentation.movies.components.MoviesScreen
 import com.dz.movietmdp.ui.theme.MovieTMDPTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.apply {
+        /*window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             setFlags(
@@ -31,7 +33,7 @@ class MainActivity : ComponentActivity() {
             )
             decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             statusBarColor = Color.TRANSPARENT
-        }
+        }*/
         setContent {
             MovieTMDPTheme {
                 Surface(color = MaterialTheme.colors.background) {
@@ -58,6 +60,14 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     MovieTMDPTheme {
-        MoviesScreen(navController = rememberNavController())
+        //MoviesScreen(navController = rememberNavController())
+        MovieItemUi(movieItem = MovieItem(
+            1244,
+            "The Shawshank Redemption",
+            8.7,
+            "",
+            "1994-09-23"
+
+        ))
     }
 }
