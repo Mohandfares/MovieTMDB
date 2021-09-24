@@ -1,5 +1,7 @@
 package com.dz.movietmdp.data.remote.dto
 
+import com.dz.movietmdp.common.Constants
+import com.dz.movietmdp.domain.model.MovieDetail
 import com.google.gson.annotations.SerializedName
 
 data class MovieDetailDto(
@@ -7,7 +9,7 @@ data class MovieDetailDto(
     @SerializedName("backdrop_path")
     val backdropPath: String,
     @SerializedName("belongs_to_collection")
-    val belongsToCollection: BelongsToCollection,
+    val belongsToCollection: BelongsToCollection?,
     val budget: Int,
     val genres: List<Genre>,
     val homepage: String,
@@ -41,3 +43,29 @@ data class MovieDetailDto(
     @SerializedName("vote_count")
     val voteCount: Int
 )
+
+fun MovieDetailDto.toMovieDetail(): MovieDetail =
+    MovieDetail(
+        id = id,
+        backdropPath = "${Constants.IMG_SOURCE_URL}$backdropPath",
+        releaseDate = releaseDate,
+        belongsToCollection = belongsToCollection,
+        budget = budget,
+        genres = genres,
+        homepage = homepage,
+        originalLanguage = originalLanguage,
+        originalTitle = originalTitle,
+        overview = overview,
+        popularity = popularity,
+        posterPath = "${Constants.IMG_SOURCE_URL}$posterPath",
+        productionCompanies = productionCompanies,
+        productionCountries = productionCountries,
+        revenue = revenue,
+        runtime = runtime,
+        spokenLanguages = spokenLanguages,
+        status = status,
+        tagline = tagline,
+        title = title,
+        voteAverage = voteAverage,
+        voteCount = voteCount
+    )

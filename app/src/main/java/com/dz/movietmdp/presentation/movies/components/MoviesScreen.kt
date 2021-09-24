@@ -28,8 +28,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.dz.movietmdp.R
 import com.dz.movietmdp.domain.usecase.getmovies.MoviesFilter
+import com.dz.movietmdp.presentation.Screen
 import com.dz.movietmdp.presentation.common.EmptyStateUI
 import com.dz.movietmdp.presentation.movies.MoviesViewModel
+import com.dz.movietmdp.ui.theme.BlackShadow
 import com.dz.movietmdp.ui.theme.MatrixColor
 import com.dz.movietmdp.ui.theme.MatrixDarkColor
 
@@ -47,7 +49,12 @@ fun MoviesScreen(
 
                 LazyRow(modifier = Modifier.fillMaxSize()) {
                     items(state.movies) { movie ->
-                        MovieItemUi(movieItem = movie)
+                        MovieItemUi(
+                            movieItem = movie,
+                            onClickItem = {
+                                navController.navigate(Screen.MovieDetailScreen.route + "/${movie.id}")
+                            }
+                        )
                     }
                 }
             }
@@ -109,7 +116,6 @@ fun Header() {
                     style = MaterialTheme.typography.body1,
                     color = Color.White
                 )
-
             }
         }
     }

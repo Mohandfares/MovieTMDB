@@ -34,10 +34,10 @@ class MoviesViewModel @Inject constructor(
 
     fun getMovies(filter: MoviesFilter = MoviesFilter.Popular) {
         moviesUseCase(filter).onEach { result ->
-            when (result) {
-                is Resource.Error -> _state.value = MoviesListState(error = result.message ?: "An unexpected error")
-                is Resource.Loading -> _state.value = MoviesListState(isLoading = true)
-                is Resource.Success -> _state.value = MoviesListState(movies = result.data ?: emptyList())
+            _state.value = when (result) {
+                is Resource.Error ->  MoviesListState(error = result.message ?: "An unexpected error")
+                is Resource.Loading -> MoviesListState(isLoading = true)
+                is Resource.Success -> MoviesListState(movies = result.data ?: emptyList())
             }
         }.launchIn(viewModelScope)
     }

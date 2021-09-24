@@ -1,6 +1,7 @@
 package com.dz.movietmdp.presentation.movies.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -18,11 +19,14 @@ import coil.compose.rememberImagePainter
 import com.dz.movietmdp.domain.model.MovieItem
 
 @Composable
-fun MovieItemUi(movieItem: MovieItem) {
+fun MovieItemUi(movieItem: MovieItem,onClickItem: (MovieItem) -> Unit) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start,
-        modifier = Modifier.width(200.dp).padding(5.dp)
+        modifier = Modifier
+            .width(200.dp)
+            .padding(5.dp)
+            .clickable { onClickItem(movieItem) }
     ) {
         Card(
             modifier = Modifier.size(width = 200.dp,height = 250.dp),
