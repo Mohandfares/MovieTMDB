@@ -74,10 +74,10 @@ fun Cover(movieDetail: MovieDetail) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(250.dp)
+            .height(300.dp)
             .padding(5.dp),
     ) {
-        Card(shape = RoundedCornerShape(30.dp)) {
+        Card(shape = RoundedCornerShape(20.dp)) {
             Box {
                 Image(
                     painter = image,
@@ -96,8 +96,8 @@ fun Cover(movieDetail: MovieDetail) {
                         .background(
                             Brush.verticalGradient(
                                 listOf(Color.Transparent, Color.Black),
-                                250 * 0.6F,
-                                250 * 1F
+                                300.dp.value * 0.6F,
+                                300.dp.value * 1F
                             )
                         )
                 ) {}
