@@ -1,6 +1,7 @@
 package com.dz.movietmdp.presentation.movies.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,13 +11,18 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
+import com.dz.movietmdp.R
 import com.dz.movietmdp.domain.model.MovieItem
+import com.dz.movietmdp.ui.theme.YellowAlpha
 
 @Composable
 fun MovieItemUi(movieItem: MovieItem,onClickItem: (MovieItem) -> Unit) {
@@ -46,10 +52,39 @@ fun MovieItemUi(movieItem: MovieItem,onClickItem: (MovieItem) -> Unit) {
             overflow = TextOverflow.Ellipsis
         )
         Spacer(modifier = Modifier.height(5.dp))
-        Text(
-            text = movieItem.releaseDate,
-            fontWeight = FontWeight.Medium,
-            fontSize = 10.sp
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = movieItem.releaseDate,
+                fontWeight = FontWeight.Medium,
+                fontSize = 10.sp
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier
+                    .background(
+                        color = YellowAlpha,
+                        shape = RoundedCornerShape(60.dp)
+                    )
+                    .padding(horizontal = 6.dp, vertical = 2.dp)
+            ) {
+                Text(
+                    text = "${movieItem.voteAverage}",
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Yellow,
+                    fontSize = 12.sp
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.ic_twotone_star_24),
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(Color.Yellow),
+                    modifier = Modifier.size(14.dp)
+                )
+            }
+        }
     }
 }
