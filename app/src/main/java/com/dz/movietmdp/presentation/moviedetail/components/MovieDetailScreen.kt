@@ -2,8 +2,10 @@ package com.dz.movietmdp.presentation.moviedetail.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
@@ -35,6 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import com.dz.movietmdp.common.Constants
 import com.dz.movietmdp.common.toDateFormat
+import com.dz.movietmdp.data.remote.dto.ProductionCompany
 import com.dz.movietmdp.domain.model.MovieItem
 import com.dz.movietmdp.presentation.movies.components.MovieItemUi
 import com.dz.movietmdp.ui.theme.MatrixColor
@@ -162,10 +165,12 @@ fun Overview(movieDetail: MovieDetail) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End,
-                modifier = Modifier.background(
-                    color = YellowAlpha,
-                    shape = RoundedCornerShape(80.dp)
-                ).padding(horizontal = 8.dp,vertical = 2.dp)
+                modifier = Modifier
+                    .background(
+                        color = YellowAlpha,
+                        shape = RoundedCornerShape(80.dp)
+                    )
+                    .padding(horizontal = 8.dp, vertical = 2.dp)
             ) {
                 Text(
                     text = "${movieDetail.voteAverage}",
@@ -181,10 +186,31 @@ fun Overview(movieDetail: MovieDetail) {
                 )
             }
         }
-        Spacer(modifier = Modifier.height(10.dp))
-        Text(
-            text = movieDetail.overview,
-            style = typography.body2
-        )
+
+        movieDetail.overview?.let { overview ->
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = "Overview",
+                style = typography.h5,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = overview,
+                style = typography.body2
+            )
+        }
+
+        movieDetail.homepage?.let { homepage ->
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = homepage,
+                fontWeight = FontWeight.Medium,
+                color = MatrixColor,
+                fontSize = 12.sp,
+                modifier = Modifier.clickable {  }
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+        }
     }
 }
