@@ -1,5 +1,7 @@
 package com.dz.movietmdp.presentation.moviedetail.components
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,6 +38,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import com.dz.movietmdp.common.Constants
 import com.dz.movietmdp.common.toDateFormat
 import com.dz.movietmdp.data.remote.dto.ProductionCompany
@@ -202,13 +206,17 @@ fun Overview(movieDetail: MovieDetail) {
         }
 
         movieDetail.homepage?.let { homepage ->
+            val context = LocalContext.current
             Spacer(modifier = Modifier.height(5.dp))
             Text(
                 text = homepage,
                 fontWeight = FontWeight.Medium,
                 color = MatrixColor,
                 fontSize = 12.sp,
-                modifier = Modifier.clickable {  }
+                modifier = Modifier.clickable {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(homepage))
+                    startActivity(context, intent, null)
+                }
             )
             Spacer(modifier = Modifier.height(5.dp))
         }
