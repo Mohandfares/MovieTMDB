@@ -47,7 +47,7 @@ class MoviesViewModel @Inject constructor(
     ) {
         moviesUseCase(filter,trending).onEach { result ->
             _state.value = when (result) {
-                is Resource.Error ->  MoviesListState(error = result.message ?: "An unexpected error")
+                is Resource.Error -> MoviesListState(error = result.message ?: "An unexpected error")
                 is Resource.Loading -> MoviesListState(isLoading = true)
                 is Resource.Success -> MoviesListState(movies = result.data ?: emptyList())
             }
