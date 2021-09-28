@@ -2,13 +2,12 @@ package com.dz.movietmdp.presentation.movies.components
 
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -33,6 +32,7 @@ import com.dz.movietmdp.presentation.common.EmptyStateUI
 import com.dz.movietmdp.presentation.movies.MoviesViewModel
 import com.dz.movietmdp.ui.theme.BlackShadow
 import com.dz.movietmdp.ui.theme.MatrixColor
+import com.dz.movietmdp.ui.theme.MatrixColorAlpha
 import com.dz.movietmdp.ui.theme.MatrixDarkColor
 
 
@@ -43,20 +43,24 @@ fun MoviesScreen(
 ) {
     val state = viewModel.state.value
     Box(modifier = Modifier.fillMaxSize()) {
-        LazyColumn {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
             item {
                 Header()
+            }
 
-                LazyRow(modifier = Modifier.fillMaxSize()) {
-                    items(state.movies) { movie ->
-                        MovieItemUi(
-                            movieItem = movie,
-                            onClickItem = {
-                                navController.navigate(Screen.MovieDetailScreen.route + "/${movie.id}")
-                            }
-                        )
+            items(state.movies) { movie ->
+                MovieListItem(
+                    movieItem = movie,
+                    onClickItem = {
+                        navController.navigate(Screen.MovieDetailScreen.route + "/${movie.id}")
                     }
-                }
+                )
+            }
+
+            item {
+                Box(Modifier.fillMaxWidth().height(100.dp))
             }
         }
 
@@ -162,6 +166,7 @@ fun BottomNavigationItem(
     onClickItem: () -> Unit
 ) {
     val color: Color = if (filterState.name == text) MatrixColor else Color.White
+    val background = if (filterState.name == text) MatrixColorAlpha else MatrixDarkColor
     Column(
         modifier = Modifier
             .width(80.dp)
@@ -169,13 +174,25 @@ fun BottomNavigationItem(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painter,
-            contentDescription = "",
-            modifier = Modifier.size(24.dp),
-            colorFilter = ColorFilter.tint(color),
-            contentScale = ContentScale.Crop
-        )
+        Box(
+            modifier = Modifier
+                .width(60.dp)
+                .background(
+                    color = background,
+                    shape = RoundedCornerShape(30.dp)
+                ),
+        ) {
+            Image(
+                painter = painter,
+                contentDescription = "",
+                modifier = Modifier
+                    .padding(vertical = 5.dp)
+                    .size(24.dp)
+                    .align(Alignment.Center),
+                colorFilter = ColorFilter.tint(color),
+                contentScale = ContentScale.Crop
+            )
+        }
         Spacer(modifier = Modifier.height(5.dp))
         Text(
             text = text,

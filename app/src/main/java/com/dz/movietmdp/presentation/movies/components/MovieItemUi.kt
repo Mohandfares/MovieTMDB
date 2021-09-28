@@ -17,74 +17,106 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.dz.movietmdp.R
 import com.dz.movietmdp.domain.model.MovieItem
-import com.dz.movietmdp.ui.theme.YellowAlpha
+import com.dz.movietmdp.ui.theme.*
 
 @Composable
-fun MovieItemUi(movieItem: MovieItem,onClickItem: (MovieItem) -> Unit) {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.Start,
-        modifier = Modifier
-            .width(200.dp)
-            .padding(5.dp)
+fun MovieListItem(movieItem: MovieItem,onClickItem: (MovieItem) -> Unit) {
+    Box(
+        Modifier
+            .fillMaxWidth()
             .clickable { onClickItem(movieItem) }
     ) {
-        Card(
-            modifier = Modifier.size(width = 200.dp,height = 250.dp),
-            shape = RoundedCornerShape(10.dp)
-        ) {
-            Image(
-                painter = rememberImagePainter(movieItem.posterPath),
-                contentDescription = "",
-                contentScale = ContentScale.Crop
-            )
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        Text(
-            text = movieItem.originalTitle,
-            fontWeight = FontWeight.Bold,
-            fontSize = 12.sp,
-            overflow = TextOverflow.Ellipsis
-        )
-        Spacer(modifier = Modifier.height(5.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = movieItem.releaseDate,
-                fontWeight = FontWeight.Medium,
-                fontSize = 10.sp
-            )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier
-                    .background(
-                        color = YellowAlpha,
-                        shape = RoundedCornerShape(60.dp)
-                    )
-                    .padding(horizontal = 6.dp, vertical = 2.dp)
-            ) {
-                Text(
-                    text = "${movieItem.voteAverage}",
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Yellow,
-                    fontSize = 12.sp
+        Box(
+            Modifier
+                .fillMaxWidth()
+                .height(80.dp)
+                .align(Alignment.BottomStart)
+                .background(
+                    color = MatrixColorAlpha02,
+                    shape = RoundedCornerShape(10.dp)
                 )
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Card(
+                modifier = Modifier.size(width = 150.dp,height = 200.dp),
+                shape = RoundedCornerShape(10.dp)
+            ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_twotone_star_24),
+                    painter = rememberImagePainter(movieItem.posterPath),
                     contentDescription = "",
-                    colorFilter = ColorFilter.tint(Color.Yellow),
-                    modifier = Modifier.size(14.dp)
+                    contentScale = ContentScale.Crop
                 )
             }
+            Spacer(modifier = Modifier.width(10.dp))
+            Column(verticalArrangement = Arrangement.Bottom) {
+                Text(
+                    text = movieItem.originalTitle,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
+                )
+                Spacer(modifier = Modifier.height(5.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Top,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = movieItem.releaseDate,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 10.sp,
+                        color = MediumGray
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier
+                            .background(
+                                color = YellowAlpha,
+                                shape = RoundedCornerShape(60.dp)
+                            )
+                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                    ) {
+                        Text(
+                            text = "${movieItem.voteAverage}",
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Yellow,
+                            fontSize = 12.sp
+                        )
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_twotone_star_24),
+                            contentDescription = "",
+                            colorFilter = ColorFilter.tint(Color.Yellow),
+                            modifier = Modifier.size(14.dp)
+                        )
+                    }
+                }
+            }
         }
+
+
+    }
+}
+
+@Preview
+@Composable
+fun Preview() {
+    MovieTMDPTheme() {
+        MovieListItem(
+            movieItem = MovieItem(123,"Titanike",8.9,"","2015-05-13"),
+            onClickItem = {})
     }
 }
