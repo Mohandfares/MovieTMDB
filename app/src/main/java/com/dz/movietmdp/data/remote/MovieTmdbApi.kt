@@ -8,7 +8,7 @@ import retrofit2.http.Headers
 import retrofit2.http.Path
 
 
-interface MoviedbApi {
+interface MovieTmdbApi {
 
     @Headers("Authorization: Bearer ${Constants.ApiAccessToken}")
     @GET("movie/popular")

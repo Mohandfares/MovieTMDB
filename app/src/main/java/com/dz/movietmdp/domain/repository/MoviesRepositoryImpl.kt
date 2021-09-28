@@ -1,13 +1,13 @@
 package com.dz.movietmdp.domain.repository
 
-import com.dz.movietmdp.data.remote.MoviedbApi
+import com.dz.movietmdp.data.remote.MovieTmdbApi
 import com.dz.movietmdp.data.remote.dto.MovieDetailDto
 import com.dz.movietmdp.data.remote.dto.MoviesDto
 import com.dz.movietmdp.domain.usecase.getmovies.TrendingFilter
 import javax.inject.Inject
 
 class MoviesRepositoryImpl @Inject constructor(
-    private val api: MoviedbApi
+    private val api: MovieTmdbApi
 ) : MoviesRepository {
 
     override suspend fun getPopularMovies(): MoviesDto = api.getPopularMovies()

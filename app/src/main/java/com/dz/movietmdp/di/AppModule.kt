@@ -2,7 +2,7 @@ package com.dz.movietmdp.di
 
 
 import com.dz.movietmdp.common.Constants.BASE_URL
-import com.dz.movietmdp.data.remote.MoviedbApi
+import com.dz.movietmdp.data.remote.MovieTmdbApi
 import com.dz.movietmdp.domain.repository.MoviesRepository
 import com.dz.movietmdp.domain.repository.MoviesRepositoryImpl
 import dagger.Module
@@ -19,15 +19,15 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideApi(): MoviedbApi =
+    fun provideApi(): MovieTmdbApi =
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(MoviedbApi::class.java)
+            .create(MovieTmdbApi::class.java)
 
     @Provides
     @Singleton
-    fun provideMovieRepository(api: MoviedbApi): MoviesRepository = MoviesRepositoryImpl(api)
+    fun provideMovieRepository(api: MovieTmdbApi): MoviesRepository = MoviesRepositoryImpl(api)
 
 }
