@@ -13,13 +13,16 @@ import javax.inject.Inject
 class GetMoviesUseCase @Inject constructor(
     private val repository: MoviesRepository
 ) {
-    operator fun invoke(moviesFilter: MoviesFilter): Flow<Resource<List<MovieItem>>> = flow {
+    operator fun invoke(
+        moviesFilter: MoviesFilter,
+        trendingFilter: TrendingFilter
+    ): Flow<Resource<List<MovieItem>>> = flow {
         try {
             emit(Resource.Loading<List<MovieItem>>())
             val movies = when (moviesFilter) {
                 MoviesFilter.Popular -> repository.getPopularMovies()
                 MoviesFilter.Rated -> repository.getTopRatedMovies()
-                MoviesFilter.Trending -> repository.getTrendingMovies()
+                MoviesFilter.Trending -> repository.getTrendingMovies(trendingFilter)
             }
             emit(Resource.Success<List<MovieItem>>(movies.results.map { it.toMovieItem() }))
         } catch (e: HttpException) {
@@ -32,4 +35,8 @@ class GetMoviesUseCase @Inject constructor(
 
 enum class MoviesFilter {
     Popular, Rated, Trending
+}
+
+enum class TrendingFilter {
+    Week,Day
 }

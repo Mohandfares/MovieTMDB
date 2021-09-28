@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.dz.movietmdp.R
 import com.dz.movietmdp.domain.usecase.getmovies.MoviesFilter
+import com.dz.movietmdp.domain.usecase.getmovies.TrendingFilter
 import com.dz.movietmdp.presentation.Screen
 import com.dz.movietmdp.presentation.common.EmptyStateUI
 import com.dz.movietmdp.presentation.movies.MoviesViewModel
@@ -48,6 +49,7 @@ fun MoviesScreen(
         ) {
             item {
                 Header()
+                TrendingButtons(viewModel)
             }
 
             items(state.movies) { movie ->
@@ -60,7 +62,11 @@ fun MoviesScreen(
             }
 
             item {
-                Box(Modifier.fillMaxWidth().height(100.dp))
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(100.dp)
+                )
             }
         }
 
@@ -126,6 +132,61 @@ fun Header() {
 }
 
 @Composable
+fun TrendingButtons(
+    viewModel: MoviesViewModel,
+) {
+    val filter = viewModel.filterState.value
+    if (filter.name == MoviesFilter.Trending.name) {
+        val trending = viewModel.trendingState.value
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth().padding(5.dp)
+        ) {
+            Text(
+                text = "Trending",
+                style = MaterialTheme.typography.h5
+            )
+
+            Box(
+                modifier = Modifier
+                    .border(
+                        width = 1.dp,
+                        color = MatrixColor,
+                        shape = RoundedCornerShape(100.dp)
+                    )
+            ) {
+                Row {
+                    Text(
+                        text = "Today",
+                        Modifier
+                            .background(
+                                color = if (trending.name == TrendingFilter.Day.name) MatrixColor else MatrixDarkColor,
+                                shape = RoundedCornerShape(100.dp)
+                            )
+                            .padding(10.dp)
+                            .clickable { viewModel.trendingChange(TrendingFilter.Day) },
+                        color = if (trending.name == TrendingFilter.Day.name) Color.White else MatrixColor
+                    )
+                    Spacer(modifier = Modifier.width(15.dp))
+                    Text(
+                        text = "This week",
+                        Modifier
+                            .background(
+                                color = if (trending.name == TrendingFilter.Week.name) MatrixColor else MatrixDarkColor,
+                                shape = RoundedCornerShape(100.dp)
+                            )
+                            .padding(10.dp)
+                            .clickable { viewModel.trendingChange(TrendingFilter.Week) },
+                        color = if (trending.name == TrendingFilter.Week.name) Color.White else MatrixColor
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
 fun BottomNavigation(
     modifier: Modifier = Modifier,
     viewModel: MoviesViewModel,
@@ -152,7 +213,7 @@ fun BottomNavigation(
                 painter = painterResource(id = R.drawable.ic_twotone_whatshot_24),
                 text = "Trending",
                 filterState = filterState,
-                onClickItem = { viewModel.filterChanged(MoviesFilter.Trending )})
+                onClickItem = { viewModel.filterChanged(MoviesFilter.Trending) })
         }
     }
 }

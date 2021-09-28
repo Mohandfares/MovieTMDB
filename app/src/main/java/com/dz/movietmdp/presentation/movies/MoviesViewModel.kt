@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.dz.movietmdp.common.Resource
 import com.dz.movietmdp.domain.usecase.getmovies.GetMoviesUseCase
 import com.dz.movietmdp.domain.usecase.getmovies.MoviesFilter
+import com.dz.movietmdp.domain.usecase.getmovies.TrendingFilter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -23,17 +24,28 @@ class MoviesViewModel @Inject constructor(
     private val _filterState = mutableStateOf<MoviesFilter>(MoviesFilter.Popular)
     val filterState: State<MoviesFilter> = _filterState
 
+    private val _trendingState = mutableStateOf<TrendingFilter>(TrendingFilter.Week)
+    val trendingState: State<TrendingFilter> = _trendingState
+
     init {
         getMovies()
     }
 
     fun filterChanged(filter: MoviesFilter) {
         _filterState.value = filter
-        getMovies(filter)
+        getMovies(filter = filter)
     }
 
-    fun getMovies(filter: MoviesFilter = MoviesFilter.Popular) {
-        moviesUseCase(filter).onEach { result ->
+    fun trendingChange(trending: TrendingFilter) {
+        _trendingState.value = trending
+        getMovies(trending = trending)
+    }
+
+    fun getMovies(
+        filter: MoviesFilter = MoviesFilter.Popular,
+        trending: TrendingFilter = TrendingFilter.Day
+    ) {
+        moviesUseCase(filter,trending).onEach { result ->
             _state.value = when (result) {
                 is Resource.Error ->  MoviesListState(error = result.message ?: "An unexpected error")
                 is Resource.Loading -> MoviesListState(isLoading = true)

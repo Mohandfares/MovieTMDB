@@ -7,6 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Path
 
+
 interface MoviedbApi {
 
     @Headers("Authorization: Bearer ${Constants.ApiAccessToken}")
@@ -19,7 +20,11 @@ interface MoviedbApi {
 
     @Headers("Authorization: Bearer ${Constants.ApiAccessToken}")
     @GET("trending/movie/week")
-    suspend fun getTrendingMovies(): MoviesDto
+    suspend fun getTrendingWeekMovies(): MoviesDto
+
+    @Headers("Authorization: Bearer ${Constants.ApiAccessToken}")
+    @GET("trending/movie/day")
+    suspend fun getTrendingDayMovies(): MoviesDto
 
     @Headers("Authorization: Bearer ${Constants.ApiAccessToken}")
     @GET("movie/{movieId}")
