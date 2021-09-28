@@ -33,17 +33,17 @@ class MoviesViewModel @Inject constructor(
 
     fun filterChanged(filter: MoviesFilter) {
         _filterState.value = filter
-        getMovies(filter = filter)
+        getMovies()
     }
 
     fun trendingChange(trending: TrendingFilter) {
         _trendingState.value = trending
-        getMovies(trending = trending)
+        getMovies()
     }
 
     fun getMovies(
-        filter: MoviesFilter = MoviesFilter.Popular,
-        trending: TrendingFilter = TrendingFilter.Day
+        filter: MoviesFilter = filterState.value,
+        trending: TrendingFilter = trendingState.value
     ) {
         moviesUseCase(filter,trending).onEach { result ->
             _state.value = when (result) {
