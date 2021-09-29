@@ -10,12 +10,12 @@ class MoviesRepositoryImpl @Inject constructor(
     private val api: MovieTmdbApi
 ) : MoviesRepository {
 
-    override suspend fun getPopularMovies(): MoviesDto = api.getPopularMovies()
-    override suspend fun getTopRatedMovies(): MoviesDto = api.getTopRatedMovies()
-    override suspend fun getTrendingMovies(trendingFilter: TrendingFilter): MoviesDto {
+    override suspend fun getPopularMovies(page: Int): MoviesDto = api.getPopularMovies(page)
+    override suspend fun getTopRatedMovies(page: Int): MoviesDto = api.getTopRatedMovies(page)
+    override suspend fun getTrendingMovies(trendingFilter: TrendingFilter,page: Int): MoviesDto {
         return when (trendingFilter) {
-            TrendingFilter.Week -> api.getTrendingWeekMovies()
-            TrendingFilter.Day -> api.getTrendingDayMovies()
+            TrendingFilter.Week -> api.getTrendingWeekMovies(page)
+            TrendingFilter.Day -> api.getTrendingDayMovies(page)
         }
     }
     override suspend fun getMovie(movieId: String): MovieDetailDto = api.getMovie(movieId)

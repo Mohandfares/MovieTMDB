@@ -1,5 +1,6 @@
 package com.dz.movietmdp.data.remote.dto
 
+import com.dz.movietmdp.domain.model.Movies
 import com.google.gson.annotations.SerializedName
 
 data class MoviesDto(
@@ -11,3 +12,10 @@ data class MoviesDto(
     val totalResults: Int,
     val dates: Dates?
 )
+
+fun MoviesDto.toMovies(): Movies =
+    Movies(
+        results = results.map { it.toMovieItem() },
+        totalPages = totalPages,
+        totalResults = totalResults
+    )

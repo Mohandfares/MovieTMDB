@@ -27,29 +27,43 @@ class MoviesViewModel @Inject constructor(
     private val _trendingState = mutableStateOf<TrendingFilter>(TrendingFilter.Week)
     val trendingState: State<TrendingFilter> = _trendingState
 
+    private val _pageState = mutableStateOf<Int>(1)
+    val pageState: State<Int> = _pageState
+
     init {
         getMovies()
     }
 
     fun filterChanged(filter: MoviesFilter) {
         _filterState.value = filter
+        _pageState.value = 1
         getMovies()
     }
 
     fun trendingChange(trending: TrendingFilter) {
         _trendingState.value = trending
+        _pageState.value = 1
+        getMovies()
+    }
+
+    fun loadMoreMovies(page: Int = 0) {
+        _pageState.value = if (page == 0) _pageState.value + 1 else page
         getMovies()
     }
 
     fun getMovies(
         filter: MoviesFilter = filterState.value,
-        trending: TrendingFilter = trendingState.value
+        trending: TrendingFilter = trendingState.value,
+        page: Int = pageState.value
     ) {
-        moviesUseCase(filter,trending).onEach { result ->
+        moviesUseCase(filter,trending,page).onEach { result ->
             _state.value = when (result) {
                 is Resource.Error -> MoviesListState(error = result.message ?: "An unexpected error")
                 is Resource.Loading -> MoviesListState(isLoading = true)
-                is Resource.Success -> MoviesListState(movies = result.data ?: emptyList())
+                is Resource.Success -> MoviesListState(
+                    movies = result.data?.results ?: emptyList(),
+                    totalPages = result.data?.totalPages ?: 0
+                )
             }
         }.launchIn(viewModelScope)
     }

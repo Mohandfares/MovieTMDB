@@ -2,13 +2,13 @@ package com.dz.movietmdp.presentation.movies.components
 
 
 import android.annotation.SuppressLint
-import android.widget.RatingBar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -42,6 +42,7 @@ fun MoviesScreen(
     viewModel: MoviesViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
+    val totalPages = state.totalPages
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier.fillMaxSize()
@@ -49,6 +50,23 @@ fun MoviesScreen(
             item {
                 Header()
                 TrendingButtons(viewModel)
+                Spacer(modifier = Modifier.height(5.dp))
+                if (totalPages > 5) {
+                    val pages = listOf(1,2,3,4,5,6)
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        items(pages) { page ->
+                            if (page == 6) {
+                                PageItem(next = true, viewModel = viewModel)
+                            } else {
+                                PageItem(value = page, viewModel = viewModel)
+                            }
+                            Spacer(modifier = Modifier.width(5.dp))
+                        }
+                    }
+                }
             }
 
             items(state.movies) { movie ->
@@ -140,7 +158,9 @@ fun TrendingButtons(
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().padding(5.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp)
         ) {
             Text(
                 text = "Trending",
@@ -258,6 +278,40 @@ fun BottomNavigationItem(
             text = text,
             color = color,
             fontSize = 11.sp
+        )
+    }
+}
+
+@Composable
+fun PageItem(
+    value: Int = 0,
+    next: Boolean = false,
+    viewModel: MoviesViewModel
+) {
+    val currentPage = viewModel.pageState.value
+    Box(
+        modifier = Modifier
+            .border(
+                width = 1.dp,
+                color = MatrixColor,
+                shape = RoundedCornerShape(100.dp)
+            ).clickable {
+                if (next) {
+                    viewModel.loadMoreMovies()
+                } else {
+                    viewModel.loadMoreMovies(page = value)
+                }
+            }
+    ) {
+        Text(
+            text = if (!next) "$value" else "Next",
+            Modifier
+                .background(
+                    color = if (currentPage == value && !next || currentPage > value && next) MatrixColorAlpha else MatrixDarkColor,
+                    shape = RoundedCornerShape(100.dp)
+                )
+                .padding(horizontal = 11.dp,vertical = 5.dp),
+            color = if (currentPage == value && !next || currentPage > value && next) Color.White else MatrixColor
         )
     }
 }

@@ -6,8 +6,8 @@ import com.dz.movietmdp.domain.usecase.getmovies.TrendingFilter
 
 interface MoviesRepository {
 
-    suspend fun getPopularMovies(): MoviesDto
-    suspend fun getTopRatedMovies(): MoviesDto
-    suspend fun getTrendingMovies(trendingFilter: TrendingFilter): MoviesDto
+    suspend fun getPopularMovies(page: Int): MoviesDto
+    suspend fun getTopRatedMovies(page: Int): MoviesDto
+    suspend fun getTrendingMovies(trendingFilter: TrendingFilter,page: Int): MoviesDto
     suspend fun getMovie(movieId: String): MovieDetailDto
 }
