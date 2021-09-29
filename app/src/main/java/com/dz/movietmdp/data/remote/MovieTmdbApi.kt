@@ -28,6 +28,13 @@ interface MovieTmdbApi {
     suspend fun getTrendingDayMovies(@Query("page") page: Int): MoviesDto
 
     @Headers("Authorization: Bearer ${Constants.ApiAccessToken}")
+    @GET("search/movie")
+    suspend fun searchMovies(
+        @Query("page") page: Int,
+        @Query("query") query: String
+    ): MoviesDto
+
+    @Headers("Authorization: Bearer ${Constants.ApiAccessToken}")
     @GET("movie/{movieId}")
     suspend fun getMovie(@Path("movieId") movieId: String): MovieDetailDto
 }

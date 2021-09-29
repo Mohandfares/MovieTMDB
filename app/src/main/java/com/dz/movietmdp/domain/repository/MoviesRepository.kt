@@ -9,5 +9,6 @@ interface MoviesRepository {
     suspend fun getPopularMovies(page: Int): MoviesDto
     suspend fun getTopRatedMovies(page: Int): MoviesDto
     suspend fun getTrendingMovies(trendingFilter: TrendingFilter,page: Int): MoviesDto
+    suspend fun searchMovies(page: Int, query: String): MoviesDto
     suspend fun getMovie(movieId: String): MovieDetailDto
 }

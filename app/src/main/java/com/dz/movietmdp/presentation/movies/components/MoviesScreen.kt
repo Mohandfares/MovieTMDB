@@ -11,8 +11,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -21,6 +25,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -49,7 +55,7 @@ fun MoviesScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             item {
-                Header()
+                Header(viewModel)
                 TrendingButtons(viewModel)
                 Spacer(modifier = Modifier.height(5.dp))
                 if (totalPages > 5) {
@@ -68,7 +74,7 @@ fun MoviesScreen(
                                     next = true,
                                     currentPage = currentPage,
                                     onClickItem = {
-                                        if (currentPage <= totalPages)
+                                        if (currentPage < totalPages)
                                             viewModel.loadMoreMovies()
                                     })
                                 else -> PageItem(
@@ -79,7 +85,7 @@ fun MoviesScreen(
                             Spacer(modifier = Modifier.width(5.dp))
                         }
                     }
-                } else {
+                } else if (totalPages in 2..5) {
                     LazyRow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
@@ -136,7 +142,7 @@ fun MoviesScreen(
 }
 
 @Composable
-fun Header() {
+fun Header(viewModel: MoviesViewModel) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -156,7 +162,7 @@ fun Header() {
             Column(
                 modifier = Modifier
                     .padding(20.dp)
-                    .align(Alignment.BottomCenter)
+                    .align(Alignment.BottomStart)
             ) {
                 Text(
                     text = "Welcome.",
@@ -164,11 +170,48 @@ fun Header() {
                     color = Color.White
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    text = "Millions of movies, TV shows and people to discover. Explore now.",
-                    style = MaterialTheme.typography.body1,
-                    color = Color.White
-                )
+                val filter: MoviesFilter = viewModel.filterState.value
+                if (filter.name == MoviesFilter.Search.name) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(
+                                width = 1.dp,
+                                color = MatrixColor,
+                                shape = RoundedCornerShape(100.dp)
+                            )
+                            .background(color = MatrixColorAlpha, shape = RoundedCornerShape(100.dp))
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Start
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_baseline_search_24),
+                                contentDescription = "",
+                                modifier = Modifier.size(24.dp),
+                                colorFilter = ColorFilter.tint(color = Color.White)
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            BasicTextField(
+                                value = viewModel.queryState.value.replace("''",""),
+                                onValueChange = { viewModel.doSearch(it) },
+                                maxLines = 1,
+                                textStyle = TextStyle(color = Color.White, fontWeight = FontWeight.Bold),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    }
+                } else {
+                    Text(
+                        text = "Millions of movies, TV shows and people to discover. Explore now.",
+                        style = MaterialTheme.typography.body1,
+                        color = Color.White
+                    )
+                }
             }
         }
     }
@@ -238,7 +281,7 @@ fun BottomNavigation(
 ) {
     val filterState = viewModel.filterState.value
     Column(modifier = modifier) {
-        Divider()
+        Divider(Modifier.height(0.5.dp))
         Spacer(modifier = Modifier.height(5.dp))
         Row(
             modifier = modifier,
@@ -259,6 +302,11 @@ fun BottomNavigation(
                 text = "Trending",
                 filterState = filterState,
                 onClickItem = { viewModel.filterChanged(MoviesFilter.Trending) })
+            BottomNavigationItem(
+                painter = painterResource(id = R.drawable.ic_baseline_youtube_searched_for_24),
+                text = "Search",
+                filterState = filterState,
+                onClickItem = { viewModel.filterChanged(MoviesFilter.Search) })
         }
     }
 }

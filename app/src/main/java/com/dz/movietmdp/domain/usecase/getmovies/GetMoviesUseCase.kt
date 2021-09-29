@@ -14,6 +14,7 @@ class GetMoviesUseCase @Inject constructor(
     private val repository: MoviesRepository
 ) {
     operator fun invoke(
+        query: String,
         moviesFilter: MoviesFilter,
         trendingFilter: TrendingFilter,
         page: Int
@@ -24,6 +25,7 @@ class GetMoviesUseCase @Inject constructor(
                 MoviesFilter.Popular -> repository.getPopularMovies(page)
                 MoviesFilter.Rated -> repository.getTopRatedMovies(page)
                 MoviesFilter.Trending -> repository.getTrendingMovies(trendingFilter,page)
+                MoviesFilter.Search -> repository.searchMovies(page, query)
             }
             emit(Resource.Success<Movies>(movies.toMovies()))
         } catch (e: HttpException) {
@@ -35,7 +37,7 @@ class GetMoviesUseCase @Inject constructor(
 }
 
 enum class MoviesFilter {
-    Popular, Rated, Trending
+    Popular, Rated, Trending, Search
 }
 
 enum class TrendingFilter {

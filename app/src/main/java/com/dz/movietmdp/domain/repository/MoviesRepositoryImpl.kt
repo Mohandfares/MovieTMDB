@@ -18,5 +18,6 @@ class MoviesRepositoryImpl @Inject constructor(
             TrendingFilter.Day -> api.getTrendingDayMovies(page)
         }
     }
+    override suspend fun searchMovies(page: Int, query: String): MoviesDto = api.searchMovies(page, query)
     override suspend fun getMovie(movieId: String): MovieDetailDto = api.getMovie(movieId)
 }
