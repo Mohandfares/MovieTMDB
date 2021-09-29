@@ -52,16 +52,16 @@ fun MoviesScreen(
                 TrendingButtons(viewModel)
                 Spacer(modifier = Modifier.height(5.dp))
                 if (totalPages > 5) {
-                    val pages = listOf(1,2,3,4,5,6)
+                    val pages = listOf(0, 1, 2, 3, 4, 5, 6)
                     LazyRow(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
                     ) {
                         items(pages) { page ->
-                            if (page == 6) {
-                                PageItem(next = true, viewModel = viewModel)
-                            } else {
-                                PageItem(value = page, viewModel = viewModel)
+                            when (page) {
+                                0 -> PageItem(back = true, viewModel = viewModel)
+                                6 -> PageItem(next = true, viewModel = viewModel)
+                                else -> PageItem(value = page, viewModel = viewModel)
                             }
                             Spacer(modifier = Modifier.width(5.dp))
                         }
@@ -286,6 +286,7 @@ fun BottomNavigationItem(
 fun PageItem(
     value: Int = 0,
     next: Boolean = false,
+    back: Boolean = false,
     viewModel: MoviesViewModel
 ) {
     val currentPage = viewModel.pageState.value
@@ -295,23 +296,25 @@ fun PageItem(
                 width = 1.dp,
                 color = MatrixColor,
                 shape = RoundedCornerShape(100.dp)
-            ).clickable {
-                if (next) {
-                    viewModel.loadMoreMovies()
-                } else {
-                    viewModel.loadMoreMovies(page = value)
+            )
+            .clickable {
+                when {
+                    next -> viewModel.loadMoreMovies()
+                    back -> viewModel.loadBackMovies()
+                    else -> viewModel.loadMoreMovies(page = value)
+
                 }
             }
     ) {
         Text(
-            text = if (!next) "$value" else "Next",
+            text = if (next) "Next" else if (back) "Back" else "$value",
             Modifier
                 .background(
-                    color = if (currentPage == value && !next || currentPage > value && next) MatrixColorAlpha else MatrixDarkColor,
+                    color = if (currentPage == value && !next || currentPage > value && next || back) MatrixColorAlpha else MatrixDarkColor,
                     shape = RoundedCornerShape(100.dp)
                 )
-                .padding(horizontal = 11.dp,vertical = 5.dp),
-            color = if (currentPage == value && !next || currentPage > value && next) Color.White else MatrixColor
+                .padding(horizontal = 11.dp, vertical = 5.dp),
+            color = if (currentPage == value && !next || currentPage > value && next || back) Color.White else MatrixColor
         )
     }
 }

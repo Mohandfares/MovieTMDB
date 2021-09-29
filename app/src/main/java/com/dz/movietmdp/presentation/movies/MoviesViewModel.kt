@@ -51,6 +51,13 @@ class MoviesViewModel @Inject constructor(
         getMovies()
     }
 
+    fun loadBackMovies() {
+        if (_pageState.value > 1) {
+            _pageState.value --
+            getMovies()
+        }
+    }
+
     fun getMovies(
         filter: MoviesFilter = filterState.value,
         trending: TrendingFilter = trendingState.value,
