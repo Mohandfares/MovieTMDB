@@ -2,17 +2,17 @@ package com.dz.movietmdp.presentation.movies.components
 
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.*
+import android.widget.RatingBar
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -31,7 +31,6 @@ import com.dz.movietmdp.domain.usecase.getmovies.TrendingFilter
 import com.dz.movietmdp.presentation.Screen
 import com.dz.movietmdp.presentation.common.EmptyStateUI
 import com.dz.movietmdp.presentation.movies.MoviesViewModel
-import com.dz.movietmdp.ui.theme.BlackShadow
 import com.dz.movietmdp.ui.theme.MatrixColor
 import com.dz.movietmdp.ui.theme.MatrixColorAlpha
 import com.dz.movietmdp.ui.theme.MatrixDarkColor

@@ -150,13 +150,13 @@ fun Overview(movieDetail: MovieDetail) {
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Released at ${movieDetail.releaseDate.toDateFormat()}",
+                text = "Released ${movieDetail.releaseDate.toDateFormat()}",
                 fontWeight = FontWeight.Medium,
-                color = MatrixColor
+                color = MatrixColor,
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -174,12 +174,16 @@ fun Overview(movieDetail: MovieDetail) {
                     color = Color.Yellow,
                     fontSize = 20.sp
                 )
-                Image(
-                    painter = painterResource(id = R.drawable.ic_twotone_star_24),
-                    contentDescription = "",
-                    colorFilter = ColorFilter.tint(Color.Yellow),
-                    modifier = Modifier.size(20.dp)
-                )
+                Spacer(modifier = Modifier.width(5.dp))
+                val rating = (movieDetail.voteAverage / 2).toInt()
+                for (i in 1..rating) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_twotone_star_24),
+                        contentDescription = "",
+                        colorFilter = ColorFilter.tint(Color.Yellow),
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
             }
         }
 

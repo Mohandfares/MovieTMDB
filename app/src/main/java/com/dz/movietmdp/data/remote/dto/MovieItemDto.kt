@@ -38,5 +38,6 @@ fun MovieItemDto.toMovieItem(): MovieItem =
         originalTitle = originalTitle,
         posterPath = "${Constants.IMG_SOURCE_URL}$posterPath",
         voteAverage = voteAverage,
-        releaseDate = releaseDate.toDateFormat()
+        releaseDate = releaseDate.toDateFormat(),
+        originalLanguage = originalLanguage
     )

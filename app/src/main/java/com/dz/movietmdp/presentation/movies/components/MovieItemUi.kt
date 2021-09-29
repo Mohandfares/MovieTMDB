@@ -64,9 +64,17 @@ fun MovieListItem(movieItem: MovieItem,onClickItem: (MovieItem) -> Unit) {
                 Text(
                     text = movieItem.originalTitle,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp,
+                    fontSize = 13.sp,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1
+                )
+                Spacer(modifier = Modifier.height(5.dp))
+                Text(
+                    text = "Original language ${movieItem.originalLanguage.uppercase()}",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 10.sp,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MediumGray
                 )
                 Spacer(modifier = Modifier.height(5.dp))
                 Row(
@@ -96,12 +104,15 @@ fun MovieListItem(movieItem: MovieItem,onClickItem: (MovieItem) -> Unit) {
                             color = Color.Yellow,
                             fontSize = 12.sp
                         )
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_twotone_star_24),
-                            contentDescription = "",
-                            colorFilter = ColorFilter.tint(Color.Yellow),
-                            modifier = Modifier.size(14.dp)
-                        )
+                        val rating = (movieItem.voteAverage / 2).toInt()
+                        for (i in 1..rating) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_twotone_star_rate_24),
+                                contentDescription = "",
+                                colorFilter = ColorFilter.tint(Color.Yellow),
+                                modifier = Modifier.size(14.dp)
+                            )
+                        }
                     }
                 }
             }
@@ -116,7 +127,7 @@ fun MovieListItem(movieItem: MovieItem,onClickItem: (MovieItem) -> Unit) {
 fun Preview() {
     MovieTMDPTheme() {
         MovieListItem(
-            movieItem = MovieItem(123,"Titanike",8.9,"","2015-05-13"),
+            movieItem = MovieItem(123,"Titanike",8.9,"","2015-05-13","en"),
             onClickItem = {})
     }
 }
