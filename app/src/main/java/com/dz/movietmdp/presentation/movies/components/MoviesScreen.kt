@@ -43,6 +43,7 @@ fun MoviesScreen(
 ) {
     val state = viewModel.state.value
     val totalPages = state.totalPages
+    val currentPage = viewModel.pageState.value
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier.fillMaxSize()
@@ -59,10 +60,35 @@ fun MoviesScreen(
                     ) {
                         items(pages) { page ->
                             when (page) {
-                                0 -> PageItem(back = true, viewModel = viewModel)
-                                6 -> PageItem(next = true, viewModel = viewModel)
-                                else -> PageItem(value = page, viewModel = viewModel)
+                                0 -> PageItem(
+                                    back = true,
+                                    currentPage = currentPage,
+                                    onClickItem = { viewModel.loadBackMovies() })
+                                6 -> PageItem(
+                                    next = true,
+                                    currentPage = currentPage,
+                                    onClickItem = {
+                                        if (currentPage <= totalPages)
+                                            viewModel.loadMoreMovies()
+                                    })
+                                else -> PageItem(
+                                    value = page,
+                                    currentPage = currentPage,
+                                    onClickItem = { viewModel.loadMoreMovies(page = page) })
                             }
+                            Spacer(modifier = Modifier.width(5.dp))
+                        }
+                    }
+                } else {
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        items((1..totalPages).toList()) { page ->
+                            PageItem(
+                                value = page,
+                                currentPage = currentPage,
+                                onClickItem = { viewModel.loadMoreMovies(page = page) })
                             Spacer(modifier = Modifier.width(5.dp))
                         }
                     }
@@ -287,10 +313,9 @@ fun PageItem(
     value: Int = 0,
     next: Boolean = false,
     back: Boolean = false,
-    viewModel: MoviesViewModel
+    currentPage: Int,
+    onClickItem: () -> Unit
 ) {
-    val totalPages = viewModel.state.value.totalPages
-    val currentPage = viewModel.pageState.value
     Box(
         modifier = Modifier
             .border(
@@ -298,20 +323,10 @@ fun PageItem(
                 color = MatrixColor,
                 shape = RoundedCornerShape(100.dp)
             )
-            .clickable {
-                when {
-                    next -> {
-                        if (currentPage <= totalPages)
-                        viewModel.loadMoreMovies()
-                    }
-                    back -> viewModel.loadBackMovies()
-                    else -> viewModel.loadMoreMovies(page = value)
-
-                }
-            }
+            .clickable { onClickItem() }
     ) {
         Text(
-            text = if (next) "Next" else if (back) "Back" else "$value",
+            text = if (next && currentPage < 6) "Next" else if (next && currentPage >= 6) "Page $currentPage" else if (back) "Back" else "$value",
             Modifier
                 .background(
                     color = if (currentPage == value && !next || currentPage > value && next || back) MatrixColorAlpha else MatrixDarkColor,

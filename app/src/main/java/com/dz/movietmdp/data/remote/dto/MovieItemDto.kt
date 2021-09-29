@@ -21,7 +21,7 @@ data class MovieItemDto(
     @SerializedName("poster_path")
     val posterPath: String,
     @SerializedName("release_date")
-    val releaseDate: String,
+    val releaseDate: String?,
     val title: String,
     val video: Boolean,
     @SerializedName("vote_average")
