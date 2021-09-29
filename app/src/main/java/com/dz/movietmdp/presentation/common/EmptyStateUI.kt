@@ -1,7 +1,6 @@
 package com.dz.movietmdp.presentation.common
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -12,7 +11,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dz.movietmdp.R
-import com.dz.movietmdp.ui.theme.MatrixColor
 
 
 @Composable

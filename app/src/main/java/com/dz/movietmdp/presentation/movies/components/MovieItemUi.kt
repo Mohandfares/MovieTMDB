@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,7 +22,10 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.dz.movietmdp.R
 import com.dz.movietmdp.domain.model.MovieItem
-import com.dz.movietmdp.ui.theme.*
+import com.dz.movietmdp.ui.theme.MatrixColorAlpha02
+import com.dz.movietmdp.ui.theme.MediumGray
+import com.dz.movietmdp.ui.theme.MovieTMDPTheme
+import com.dz.movietmdp.ui.theme.YellowAlpha
 
 @Composable
 fun MovieListItem(movieItem: MovieItem,onClickItem: (MovieItem) -> Unit) {
