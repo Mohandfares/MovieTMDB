@@ -289,6 +289,7 @@ fun PageItem(
     back: Boolean = false,
     viewModel: MoviesViewModel
 ) {
+    val totalPages = viewModel.state.value.totalPages
     val currentPage = viewModel.pageState.value
     Box(
         modifier = Modifier
@@ -299,7 +300,10 @@ fun PageItem(
             )
             .clickable {
                 when {
-                    next -> viewModel.loadMoreMovies()
+                    next -> {
+                        if (currentPage <= totalPages)
+                        viewModel.loadMoreMovies()
+                    }
                     back -> viewModel.loadBackMovies()
                     else -> viewModel.loadMoreMovies(page = value)
 
