@@ -63,6 +63,7 @@ class MoviesViewModel @Inject constructor(
 
     fun doSearch(query: String) {
         _queryState.value = if (query.isNotBlank()) query else "''"
+        _pageState.value = 1
         getMovies()
     }
 

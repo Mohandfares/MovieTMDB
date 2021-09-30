@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -127,13 +128,23 @@ fun MoviesScreen(
         if (state.error.isNotBlank()) {
             EmptyStateUI(
                 error = state.error,
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(top = 120.dp),
                 onClick = { viewModel.getMovies() }
             )
         }
 
         if (state.isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        } else if (state.movies.isEmpty()) {
+            EmptyStateUI(
+                error = stringResource(id = R.string.movies_list_empty),
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(top = 120.dp),
+                tryAgain = false
+            )
         }
     }
 }
@@ -177,7 +188,10 @@ fun Header(viewModel: MoviesViewModel) {
                                 color = MatrixColor,
                                 shape = RoundedCornerShape(100.dp)
                             )
-                            .background(color = MatrixColorAlpha, shape = RoundedCornerShape(100.dp))
+                            .background(
+                                color = MatrixColorAlpha,
+                                shape = RoundedCornerShape(100.dp)
+                            )
                     ) {
                         Row(
                             modifier = Modifier
@@ -198,7 +212,7 @@ fun Header(viewModel: MoviesViewModel) {
                                 onValueChange = { viewModel.doSearch(it) },
                                 maxLines = 1,
                                 textStyle = TextStyle(color = Color.White, fontWeight = FontWeight.Bold),
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier.fillMaxWidth(),
                             )
                         }
                     }

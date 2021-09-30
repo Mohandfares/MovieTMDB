@@ -18,7 +18,7 @@ fun EmptyStateUI(error: String,modifier: Modifier,onClick: () -> Unit = {}, tryA
     Column(modifier = modifier) {
         Image(
             painter = painterResource(id = R.drawable.ic_twotone_sick),
-            modifier = Modifier.size(120.dp).align(Alignment.CenterHorizontally),
+            modifier = Modifier.size(100.dp).align(Alignment.CenterHorizontally),
             contentDescription = ""
         )
         Spacer(modifier = Modifier.height(15.dp))
