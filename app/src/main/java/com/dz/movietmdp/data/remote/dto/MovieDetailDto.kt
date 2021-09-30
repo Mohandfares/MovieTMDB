@@ -48,7 +48,7 @@ data class MovieDetailDto(
 fun MovieDetailDto.toMovieDetail(actors: List<Actor>): MovieDetail =
     MovieDetail(
         id = id,
-        backdropPath =  if(backdropPath != null) "${Constants.IMG_SOURCE_URL}$backdropPath" else null,
+        backdropPath =  if (backdropPath != null) "${Constants.IMG_SOURCE_URL}$backdropPath" else null,
         releaseDate = releaseDate,
         belongsToCollection = belongsToCollection,
         budget = budget,

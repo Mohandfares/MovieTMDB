@@ -57,7 +57,7 @@ fun MovieDetailScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(5.dp)
             ) {
-                item { 
+                item {
                     Cover(movieDetail = movie)
                 }
                 item {
@@ -113,7 +113,9 @@ fun MovieDetailScreen(
 
 @Composable
 fun Cover(movieDetail: MovieDetail) {
-    val image = rememberImagePainter(movieDetail.backdropPath)
+    val image = if (movieDetail.backdropPath != null)
+        rememberImagePainter(movieDetail.backdropPath)
+    else painterResource(id = R.drawable.notfoundimage)
     val density = LocalDensity.current.density
     val width = remember { mutableStateOf(0f) }
     val height = remember { mutableStateOf(0f) }
@@ -122,7 +124,7 @@ fun Cover(movieDetail: MovieDetail) {
             .fillMaxWidth()
             .height(300.dp)
     ) {
-        Card(shape = RoundedCornerShape(topStart = 20.dp,topEnd = 20.dp)) {
+        Card(shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)) {
             Box {
                 Image(
                     painter = image,

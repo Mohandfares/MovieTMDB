@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -18,13 +19,14 @@ import coil.compose.rememberImagePainter
 import com.dz.movietmdp.domain.model.Actor
 import com.dz.movietmdp.ui.theme.MatrixColor
 import com.dz.movietmdp.ui.theme.MatrixColorAlpha
-import com.dz.movietmdp.ui.theme.MediumGray
+import com.dz.movietmdp.R
 
 @Composable
 fun ActorItemUi(actor: Actor) {
-    Box(modifier = Modifier
-        .width(100.dp)
-        .background(color = MatrixColorAlpha, shape = RoundedCornerShape(10.dp))
+    Box(
+        modifier = Modifier
+            .width(100.dp)
+            .background(color = MatrixColorAlpha, shape = RoundedCornerShape(10.dp))
     ) {
         Column(
             modifier = Modifier
@@ -33,11 +35,13 @@ fun ActorItemUi(actor: Actor) {
             horizontalAlignment = Alignment.Start,
         ) {
             Card(
-                modifier = Modifier.size(width = 100.dp,height = 150.dp),
+                modifier = Modifier.size(width = 100.dp, height = 150.dp),
                 shape = RoundedCornerShape(10.dp)
             ) {
                 Image(
-                    painter = rememberImagePainter(actor.profilePath),
+                    painter = if (actor.profilePath != null)
+                        rememberImagePainter(actor.profilePath)
+                    else painterResource(id = R.drawable.notfoundimage),
                     contentDescription = "",
                     contentScale = ContentScale.Crop
                 )

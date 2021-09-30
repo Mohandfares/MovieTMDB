@@ -56,7 +56,9 @@ fun MovieListItem(movieItem: MovieItem,onClickItem: (MovieItem) -> Unit) {
                 shape = RoundedCornerShape(10.dp)
             ) {
                 Image(
-                    painter = rememberImagePainter(movieItem.posterPath),
+                    painter = if (movieItem.posterPath != null) 
+                        rememberImagePainter(movieItem.posterPath)
+                    else painterResource(id = R.drawable.notfoundimage),
                     contentDescription = "",
                     contentScale = ContentScale.Crop
                 )
@@ -129,7 +131,7 @@ fun MovieListItem(movieItem: MovieItem,onClickItem: (MovieItem) -> Unit) {
 fun Preview() {
     MovieTMDPTheme() {
         MovieListItem(
-            movieItem = MovieItem(123,"Titanike",8.9,"","2015-05-13","en"),
+            movieItem = MovieItem(123,"Titanike",8.9,null,"2015-05-13","en"),
             onClickItem = {})
     }
 }

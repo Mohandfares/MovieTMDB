@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 data class MovieItemDto(
     val adult: Boolean,
     @SerializedName("backdrop_path")
-    val backdropPath: String,
+    val backdropPath: String?,
     @SerializedName("genre_ids")
     val genreIds: List<Int>,
     val id: Int,
@@ -19,7 +19,7 @@ data class MovieItemDto(
     val overview: String,
     val popularity: Double,
     @SerializedName("poster_path")
-    val posterPath: String,
+    val posterPath: String?,
     @SerializedName("release_date")
     val releaseDate: String?,
     val title: String,
@@ -36,7 +36,7 @@ fun MovieItemDto.toMovieItem(): MovieItem =
     MovieItem(
         id = id,
         originalTitle = originalTitle,
-        posterPath = "${Constants.IMG_SOURCE_URL}$posterPath",
+        posterPath = if (posterPath != null) "${Constants.IMG_SOURCE_URL}$posterPath" else null,
         voteAverage = voteAverage,
         releaseDate = releaseDate.toDateFormat(),
         originalLanguage = originalLanguage

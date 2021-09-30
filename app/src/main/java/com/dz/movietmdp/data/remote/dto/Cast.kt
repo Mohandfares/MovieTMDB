@@ -29,5 +29,5 @@ fun Cast.toActor(): Actor =
         id = id,
         name = name,
         character = character,
-        profilePath = "${Constants.IMG_SOURCE_URL}$profilePath"
+        profilePath = if (profilePath != null) "${Constants.IMG_SOURCE_URL}$profilePath" else null
     )
