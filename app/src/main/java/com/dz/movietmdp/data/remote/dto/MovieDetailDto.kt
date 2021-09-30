@@ -31,7 +31,7 @@ data class MovieDetailDto(
     val productionCountries: List<ProductionCountry>,
     @SerializedName("release_date")
     val releaseDate: String,
-    val revenue: Int,
+    val revenue: Double,
     val runtime: Int?,
     @SerializedName("spoken_languages")
     val spokenLanguages: List<SpokenLanguage>,

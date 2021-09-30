@@ -221,7 +221,7 @@ fun Header(viewModel: MoviesViewModel) {
                                         color = Color.White,
                                         fontWeight = FontWeight.Bold
                                     ),
-                                    modifier = Modifier.fillMaxWidth(),
+                                    modifier = Modifier.fillMaxWidth()
                                 )
                                 Text(
                                     text = if (text.isEmpty()) stringResource(id = R.string.search_hint) else "",
