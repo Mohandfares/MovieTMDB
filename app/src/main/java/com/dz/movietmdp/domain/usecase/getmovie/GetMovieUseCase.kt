@@ -1,6 +1,7 @@
 package com.dz.movietmdp.domain.usecase.getmovie
 
 import com.dz.movietmdp.common.Resource
+import com.dz.movietmdp.data.remote.dto.toActor
 import com.dz.movietmdp.data.remote.dto.toMovieDetail
 import com.dz.movietmdp.domain.model.MovieDetail
 import com.dz.movietmdp.domain.repository.MoviesRepository
@@ -16,7 +17,8 @@ class GetMovieUseCase @Inject constructor(
     operator fun invoke(movieId: String): Flow<Resource<MovieDetail>> = flow {
         try {
             emit(Resource.Loading<MovieDetail>())
-            val movie = repository.getMovie(movieId).toMovieDetail()
+            val actors = repository.getMovieCredits(movieId).cast.map { it.toActor() }
+            val movie = repository.getMovie(movieId).toMovieDetail(actors)
             emit(Resource.Success<MovieDetail>(movie))
         } catch (e: HttpException) {
             emit(Resource.Error<MovieDetail>(e.localizedMessage ?: "An unexpected error"))

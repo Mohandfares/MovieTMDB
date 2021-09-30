@@ -1,6 +1,7 @@
 package com.dz.movietmdp.data.remote
 
 import com.dz.movietmdp.common.Constants
+import com.dz.movietmdp.data.remote.dto.CreditsDto
 import com.dz.movietmdp.data.remote.dto.MovieDetailDto
 import com.dz.movietmdp.data.remote.dto.MoviesDto
 import retrofit2.http.GET
@@ -37,4 +38,8 @@ interface MovieTmdbApi {
     @Headers("Authorization: Bearer ${Constants.ApiAccessToken}")
     @GET("movie/{movieId}")
     suspend fun getMovie(@Path("movieId") movieId: String): MovieDetailDto
+
+    @Headers("Authorization: Bearer ${Constants.ApiAccessToken}")
+    @GET("movie/{movieId}/credits")
+    suspend fun getMovieCredits(@Path("movieId") movieId: String): CreditsDto
 }

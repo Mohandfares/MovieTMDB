@@ -24,5 +24,6 @@ data class MovieDetail(
     val tagline: String?,
     val title: String,
     val voteAverage: Double,
-    val voteCount: Int
+    val voteCount: Int,
+    val actors: List<Actor>
 )

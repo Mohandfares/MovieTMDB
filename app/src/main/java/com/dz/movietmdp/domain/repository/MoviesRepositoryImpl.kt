@@ -1,6 +1,7 @@
 package com.dz.movietmdp.domain.repository
 
 import com.dz.movietmdp.data.remote.MovieTmdbApi
+import com.dz.movietmdp.data.remote.dto.CreditsDto
 import com.dz.movietmdp.data.remote.dto.MovieDetailDto
 import com.dz.movietmdp.data.remote.dto.MoviesDto
 import com.dz.movietmdp.domain.usecase.getmovies.TrendingFilter
@@ -20,4 +21,5 @@ class MoviesRepositoryImpl @Inject constructor(
     }
     override suspend fun searchMovies(page: Int, query: String): MoviesDto = api.searchMovies(page, query)
     override suspend fun getMovie(movieId: String): MovieDetailDto = api.getMovie(movieId)
+    override suspend fun getMovieCredits(movieId: String): CreditsDto = api.getMovieCredits(movieId)
 }

@@ -7,6 +7,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
@@ -72,6 +74,25 @@ fun MovieDetailScreen(
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     Overview(movieDetail = movie)
+                }
+                item {
+                    if (movie.actors.isNotEmpty()) {
+                        Text(
+                            text = "Top Billed Cast",
+                            style = typography.h5,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(5.dp))
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Start,
+                        ) {
+                            items(movie.actors) { actor ->
+                                ActorItemUi(actor)
+                                Spacer(modifier = Modifier.width(3.dp))
+                            }
+                        }
+                    }
                 }
             }
         }

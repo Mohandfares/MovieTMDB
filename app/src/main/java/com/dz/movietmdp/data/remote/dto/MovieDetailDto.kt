@@ -1,6 +1,7 @@
 package com.dz.movietmdp.data.remote.dto
 
 import com.dz.movietmdp.common.Constants
+import com.dz.movietmdp.domain.model.Actor
 import com.dz.movietmdp.domain.model.MovieDetail
 import com.google.gson.annotations.SerializedName
 
@@ -44,7 +45,7 @@ data class MovieDetailDto(
     val voteCount: Int
 )
 
-fun MovieDetailDto.toMovieDetail(): MovieDetail =
+fun MovieDetailDto.toMovieDetail(actors: List<Actor>): MovieDetail =
     MovieDetail(
         id = id,
         backdropPath =  if(backdropPath != null) "${Constants.IMG_SOURCE_URL}$backdropPath" else null,
@@ -67,5 +68,6 @@ fun MovieDetailDto.toMovieDetail(): MovieDetail =
         tagline = tagline,
         title = title,
         voteAverage = voteAverage,
-        voteCount = voteCount
+        voteCount = voteCount,
+        actors = actors
     )
