@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MovieTMDB</string>
     <string name="movies_list_empty">No other results found.</string>
+    <string name="search_hint">Search for a movies...</string>
 </resources>

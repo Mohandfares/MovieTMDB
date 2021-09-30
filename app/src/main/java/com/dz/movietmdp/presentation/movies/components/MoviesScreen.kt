@@ -13,7 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -207,13 +207,27 @@ fun Header(viewModel: MoviesViewModel) {
                                 colorFilter = ColorFilter.tint(color = Color.White)
                             )
                             Spacer(modifier = Modifier.width(5.dp))
-                            BasicTextField(
-                                value = viewModel.queryState.value.replace("''",""),
-                                onValueChange = { viewModel.doSearch(it) },
-                                maxLines = 1,
-                                textStyle = TextStyle(color = Color.White, fontWeight = FontWeight.Bold),
-                                modifier = Modifier.fillMaxWidth(),
-                            )
+                            val query = viewModel.queryState.value.replace("''", "")
+                            var text by remember { mutableStateOf<String>(query) }
+                            Box {
+                                BasicTextField(
+                                    value = query,
+                                    onValueChange = {
+                                        viewModel.doSearch(it)
+                                        text = it
+                                    },
+                                    maxLines = 1,
+                                    textStyle = TextStyle(
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold
+                                    ),
+                                    modifier = Modifier.fillMaxWidth(),
+                                )
+                                Text(
+                                    text = if (text.isEmpty()) stringResource(id = R.string.search_hint) else "",
+                                    modifier = Modifier.fillMaxWidth(),
+                                )
+                            }
                         }
                     }
                 } else {
