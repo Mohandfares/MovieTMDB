@@ -137,7 +137,7 @@ fun MoviesScreen(
 
         if (state.isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-        } else if (state.movies.isEmpty()) {
+        } else if (state.movies.isEmpty() && state.error.isEmpty()) {
             EmptyStateUI(
                 error = stringResource(id = R.string.movies_list_empty),
                 modifier = Modifier
