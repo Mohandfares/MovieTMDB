@@ -2,6 +2,7 @@ package com.dz.movietmdp.presentation.moviedetail.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -22,11 +23,15 @@ import com.dz.movietmdp.ui.theme.MatrixColorAlpha
 import com.dz.movietmdp.R
 
 @Composable
-fun ActorItemUi(actor: Actor) {
+fun ActorItemUi(
+    actor: Actor,
+    onClickItem: (Actor) -> Unit
+) {
     Box(
         modifier = Modifier
             .width(100.dp)
             .background(color = MatrixColorAlpha, shape = RoundedCornerShape(10.dp))
+            .clickable { onClickItem(actor) }
     ) {
         Column(
             modifier = Modifier

@@ -1,8 +1,6 @@
 package com.dz.movietmdp.domain.repository
 
-import com.dz.movietmdp.data.remote.dto.CreditsDto
-import com.dz.movietmdp.data.remote.dto.MovieDetailDto
-import com.dz.movietmdp.data.remote.dto.MoviesDto
+import com.dz.movietmdp.data.remote.dto.*
 import com.dz.movietmdp.domain.usecase.getmovies.TrendingFilter
 
 interface MoviesRepository {
@@ -13,4 +11,6 @@ interface MoviesRepository {
     suspend fun searchMovies(page: Int, query: String): MoviesDto
     suspend fun getMovie(movieId: String): MovieDetailDto
     suspend fun getMovieCredits(movieId: String): CreditsDto
+    suspend fun getCredit(creditId: String): CreditDetailDto
+    suspend fun getPerson(personId: String): PersonDetailDto
 }

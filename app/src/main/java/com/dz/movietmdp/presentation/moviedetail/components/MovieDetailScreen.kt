@@ -2,6 +2,7 @@ package com.dz.movietmdp.presentation.moviedetail.components
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,10 +34,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.dz.movietmdp.R
+import com.dz.movietmdp.common.Constants
 import com.dz.movietmdp.common.toDateFormat
 import com.dz.movietmdp.domain.model.MovieDetail
+import com.dz.movietmdp.presentation.Screen
 import com.dz.movietmdp.presentation.common.EmptyStateUI
 import com.dz.movietmdp.presentation.moviedetail.MovieDetailViewModel
 import com.dz.movietmdp.ui.theme.MatrixColor
@@ -46,6 +50,7 @@ import com.google.accompanist.flowlayout.FlowRow
 
 @Composable
 fun MovieDetailScreen(
+    navController: NavController,
     viewModel: MovieDetailViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
@@ -88,7 +93,12 @@ fun MovieDetailScreen(
                             horizontalArrangement = Arrangement.Start,
                         ) {
                             items(movie.actors) { actor ->
-                                ActorItemUi(actor)
+                                ActorItemUi(
+                                    actor = actor,
+                                    onClickItem = {
+                                        navController.navigate(Screen.ActorDetailScreen.route + "/${actor.id},${actor.creditId}")
+                                    }
+                                )
                                 Spacer(modifier = Modifier.width(3.dp))
                             }
                         }

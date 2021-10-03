@@ -27,6 +27,7 @@ data class Cast(
 fun Cast.toActor(): Actor =
     Actor(
         id = id,
+        creditId = creditId,
         name = name,
         character = character,
         profilePath = if (profilePath != null) "${Constants.IMG_SOURCE_URL}$profilePath" else null
