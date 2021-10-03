@@ -1,5 +1,6 @@
 package com.dz.movietmdp.data.remote.dto
 
+import com.dz.movietmdp.common.Constants
 import com.dz.movietmdp.domain.model.MovieItem
 import com.google.gson.annotations.SerializedName
 
@@ -15,13 +16,13 @@ data class KnownFor(
     @SerializedName("original_language")
     val originalLanguage: String,
     @SerializedName("original_title")
-    val originalTitle: String,
+    val originalTitle: String?,
     val overview: String?,
     val popularity: Double,
     @SerializedName("poster_path")
     val posterPath: String?,
     @SerializedName("release_date")
-    val releaseDate: String,
+    val releaseDate: String?,
     val title: String,
     val video: Boolean,
     @SerializedName("vote_average")
@@ -32,9 +33,9 @@ data class KnownFor(
 
 fun KnownFor.toMovie(): MovieItem =
     MovieItem(
-        originalTitle = originalTitle,
+        originalTitle = originalTitle ?: "",
         originalLanguage = originalLanguage,
-        posterPath = posterPath,
+        posterPath = if (posterPath != null) "${Constants.IMG_SOURCE_URL}$posterPath" else null,
         voteAverage = voteAverage,
-        releaseDate = releaseDate
+        releaseDate = releaseDate ?: ""
     )
