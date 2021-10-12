@@ -23,7 +23,7 @@ data class KnownFor(
     val posterPath: String?,
     @SerializedName("release_date")
     val releaseDate: String?,
-    val title: String,
+    val title: String?,
     val video: Boolean,
     @SerializedName("vote_average")
     val voteAverage: Double,
@@ -33,7 +33,7 @@ data class KnownFor(
 
 fun KnownFor.toMovie(): MovieItem =
     MovieItem(
-        originalTitle = originalTitle ?: "",
+        originalTitle = title ?: "",
         originalLanguage = originalLanguage,
         posterPath = if (posterPath != null) "${Constants.IMG_SOURCE_URL}$posterPath" else null,
         voteAverage = voteAverage,

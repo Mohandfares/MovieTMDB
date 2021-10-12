@@ -22,4 +22,5 @@ class MoviesRepositoryImpl @Inject constructor(
     override suspend fun getMovieCredits(movieId: String): CreditsDto = api.getMovieCredits(movieId)
     override suspend fun getCredit(creditId: String): CreditDetailDto = api.getCredit(creditId)
     override suspend fun getPerson(personId: String): PersonDetailDto = api.getPerson(personId)
+    override suspend fun getSocialLinks(personId: String): SocialLinksDto = api.getSocialLinks(personId)
 }

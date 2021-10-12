@@ -1,5 +1,7 @@
 package com.dz.movietmdp.presentation.actor.components
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,21 +21,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.dz.movietmdp.R
-import com.dz.movietmdp.domain.model.Actor
-import com.dz.movietmdp.domain.model.ActorDetail
-import com.dz.movietmdp.domain.model.MovieDetail
-import com.dz.movietmdp.domain.model.MovieItem
+import com.dz.movietmdp.domain.model.*
 import com.dz.movietmdp.presentation.actor.ActorViewModel
 import com.dz.movietmdp.presentation.common.EmptyStateUI
 import com.dz.movietmdp.ui.theme.BlackShadow
@@ -147,16 +150,22 @@ fun Poster(actorDetail: ActorDetail) {
                             )
                         )
                 ) {}
-                Text(
-                    text = actorDetail.name,
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.BottomStart)
-                        .padding(8.dp),
-                    style = MaterialTheme.typography.h5,
-                    color = Color.White,
-                    overflow = TextOverflow.Ellipsis
-                )
+                        .padding(8.dp)
+                ) {
+                    Text(
+                        text = actorDetail.name,
+                        style = MaterialTheme.typography.h5,
+                        color = Color.White,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    SocialLinks(socialLinks = actorDetail.socialLinks)
+                }
             }
         }
     }
@@ -192,8 +201,8 @@ fun ActorMovieItem(
             Spacer(modifier = Modifier.height(5.dp))
             Text(
                 text = movieItem.originalTitle,
-                fontWeight = FontWeight.Bold,
-                fontSize = 12.sp,
+                fontWeight = FontWeight.Medium,
+                fontSize = 11.sp,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
                 modifier = Modifier.padding(start = 3.dp)
@@ -202,3 +211,67 @@ fun ActorMovieItem(
         }
     }
 }
+
+@Composable
+fun SocialLinks(socialLinks: SocialLinks) {
+    if (!socialLinks.empty) {
+        val context = LocalContext.current
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier.padding(10.dp)
+        ) {
+            socialLinks.facebook?.let {
+                Image(
+                    painter = painterResource(id = R.drawable.facebook),
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(Color.White),
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable {
+                            val intent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://www.facebook.com/${socialLinks.facebook}")
+                            )
+                            ContextCompat.startActivity(context, intent, null)
+                        }
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+            }
+            socialLinks.instagram?.let {
+                Image(
+                    painter = painterResource(id = R.drawable.instagram),
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(Color.White),
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable {
+                            val intent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://www.instagram.com/${socialLinks.instagram}")
+                            )
+                            ContextCompat.startActivity(context, intent, null)
+                        }
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+            }
+            socialLinks.twitter?.let {
+                Image(
+                    painter = painterResource(id = R.drawable.twitter),
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(Color.White),
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable {
+                            val intent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://twitter.com/${socialLinks.twitter}")
+                            )
+                            ContextCompat.startActivity(context, intent, null)
+                        }
+                )
+            }
+        }
+    }
+}
+

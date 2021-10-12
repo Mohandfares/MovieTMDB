@@ -32,6 +32,7 @@ fun MovieListItem(movieItem: MovieItem,onClickItem: (MovieItem) -> Unit) {
     Box(
         Modifier
             .fillMaxWidth()
+            .padding(5.dp)
             .clickable { onClickItem(movieItem) }
     ) {
         Box(

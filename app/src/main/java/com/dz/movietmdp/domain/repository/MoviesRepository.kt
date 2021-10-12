@@ -13,4 +13,5 @@ interface MoviesRepository {
     suspend fun getMovieCredits(movieId: String): CreditsDto
     suspend fun getCredit(creditId: String): CreditDetailDto
     suspend fun getPerson(personId: String): PersonDetailDto
+    suspend fun getSocialLinks(personId: String): SocialLinksDto
 }

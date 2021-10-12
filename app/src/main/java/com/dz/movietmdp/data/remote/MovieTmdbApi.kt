@@ -48,4 +48,8 @@ interface MovieTmdbApi {
     @Headers("Authorization: Bearer ${Constants.ApiAccessToken}")
     @GET("person/{personId}")
     suspend fun getPerson(@Path("personId") personId: String): PersonDetailDto
+
+    @Headers("Authorization: Bearer ${Constants.ApiAccessToken}")
+    @GET("person/{personId}/external_ids")
+    suspend fun getSocialLinks(@Path("personId") personId: String): SocialLinksDto
 }

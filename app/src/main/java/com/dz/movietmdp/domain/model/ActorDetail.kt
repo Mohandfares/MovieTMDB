@@ -4,5 +4,6 @@ data class ActorDetail(
     val name: String,
     val biography: String,
     val posterPath: String?,
-    val knownFor: List<MovieItem>
+    val knownFor: List<MovieItem>,
+    val socialLinks: SocialLinks
 )

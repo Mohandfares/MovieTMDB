@@ -3,6 +3,7 @@ package com.dz.movietmdp.domain.usecase.getactor
 import com.dz.movietmdp.common.Constants
 import com.dz.movietmdp.common.Resource
 import com.dz.movietmdp.data.remote.dto.toMovie
+import com.dz.movietmdp.data.remote.dto.toSocialLinks
 import com.dz.movietmdp.domain.model.ActorDetail
 import com.dz.movietmdp.domain.repository.MoviesRepository
 import kotlinx.coroutines.flow.Flow
@@ -19,11 +20,13 @@ class GetActorUseCase @Inject constructor(
             emit(Resource.Loading<ActorDetail>())
             val movies = repository.getCredit(creditId).person.knownFor.map { it.toMovie() }
             val person = repository.getPerson(personId)
+            val socialLinks = repository.getSocialLinks(personId).toSocialLinks()
             val actorDetail = ActorDetail(
                 name = person.name,
                 biography = person.biography,
                 posterPath = if (person.profilePath != null) "${Constants.IMG_SOURCE_URL}${person.profilePath}" else null,
-                knownFor = movies
+                knownFor = movies,
+                socialLinks = socialLinks
             )
             emit(Resource.Success<ActorDetail>(actorDetail))
         } catch (e: HttpException) {
