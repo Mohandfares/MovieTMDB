@@ -19,3 +19,16 @@ fun String.reviewDateFormat(): String {
     val newFormat = SimpleDateFormat("MMMMM dd, yyyy")
     return newFormat.format(oldDate)
 }
+
+fun Int?.runTime(): String {
+    if (this != null) {
+        val hour: Int = (this / 60)
+        val minute: Int = (this % 60)
+        return when {
+            hour == 0 && minute == 0 -> ""
+            hour == 0 && minute > 0 -> "${minute}m"
+            else -> "${hour}h ${minute}m"
+        }
+    }
+    return ""
+}

@@ -43,6 +43,7 @@ import androidx.paging.compose.items
 import coil.compose.rememberImagePainter
 import com.dz.movietmdp.R
 import com.dz.movietmdp.common.Constants
+import com.dz.movietmdp.common.runTime
 import com.dz.movietmdp.common.toDateFormat
 import com.dz.movietmdp.domain.model.MovieDetail
 import com.dz.movietmdp.domain.model.ReviewItem
@@ -183,16 +184,29 @@ fun Cover(movieDetail: MovieDetail) {
                             )
                         )
                 ) {}
-                Text(
-                    text = movieDetail.title,
-                    modifier = Modifier
+                Column(
+                    Modifier
                         .fillMaxWidth()
+                        .padding(5.dp)
                         .align(Alignment.BottomStart)
-                        .padding(8.dp),
-                    style = typography.h5,
-                    color = Color.White,
-                    overflow = TextOverflow.Ellipsis
-                )
+                ) {
+                    Text(
+                        text = movieDetail.title,
+                        style = typography.h5,
+                        color = Color.White,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    val date = movieDetail.releaseDate.toDateFormat()
+                    val language = movieDetail.originalLanguage.uppercase()
+                    val runtime = movieDetail.runtime.runTime()
+                    val info = "$date ($language) . $runtime"
+                    Text(
+                        text = info,
+                        fontWeight = FontWeight.Medium,
+                        color = MatrixColor,
+                        fontSize = 14.sp
+                    )
+                }
             }
         }
     }
@@ -205,44 +219,32 @@ fun Overview(movieDetail: MovieDetail) {
         verticalArrangement = Arrangement.Center
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier
+                .background(
+                    color = YellowAlpha,
+                    shape = RoundedCornerShape(80.dp)
+                )
+                .padding(horizontal = 8.dp, vertical = 2.dp)
         ) {
             Text(
-                text = "Released ${movieDetail.releaseDate.toDateFormat()}",
-                fontWeight = FontWeight.Medium,
-                color = MatrixColor,
+                text = "${movieDetail.voteAverage}",
+                fontWeight = FontWeight.Bold,
+                color = Color.Yellow,
+                fontSize = 20.sp
             )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier
-                    .background(
-                        color = YellowAlpha,
-                        shape = RoundedCornerShape(80.dp)
-                    )
-                    .padding(horizontal = 8.dp, vertical = 2.dp)
-            ) {
-                Text(
-                    text = "${movieDetail.voteAverage}",
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Yellow,
-                    fontSize = 20.sp
+            Spacer(modifier = Modifier.width(5.dp))
+            val rating = (movieDetail.voteAverage / 2).toInt()
+            for (i in 1..rating) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_twotone_star_24),
+                    contentDescription = "",
+                    colorFilter = ColorFilter.tint(Color.Yellow),
+                    modifier = Modifier.size(20.dp)
                 )
-                Spacer(modifier = Modifier.width(5.dp))
-                val rating = (movieDetail.voteAverage / 2).toInt()
-                for (i in 1..rating) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_twotone_star_24),
-                        contentDescription = "",
-                        colorFilter = ColorFilter.tint(Color.Yellow),
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
             }
         }
-
         movieDetail.overview?.let { overview ->
             Spacer(modifier = Modifier.height(5.dp))
             Text(
