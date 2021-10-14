@@ -3,6 +3,7 @@ package com.dz.movietmdp.presentation.moviedetail.components
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -35,11 +37,15 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import coil.compose.rememberImagePainter
 import com.dz.movietmdp.R
 import com.dz.movietmdp.common.Constants
 import com.dz.movietmdp.common.toDateFormat
 import com.dz.movietmdp.domain.model.MovieDetail
+import com.dz.movietmdp.domain.model.ReviewItem
 import com.dz.movietmdp.presentation.Screen
 import com.dz.movietmdp.presentation.common.EmptyStateUI
 import com.dz.movietmdp.presentation.moviedetail.MovieDetailViewModel
@@ -58,6 +64,7 @@ fun MovieDetailScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         state.movieDetail?.let { movie ->
+            val reviews: LazyPagingItems<ReviewItem> = viewModel.reviews.collectAsLazyPagingItems()
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(5.dp)
@@ -103,6 +110,22 @@ fun MovieDetailScreen(
                             }
                         }
                     }
+                }
+
+                if (reviews.itemSnapshotList.isNotEmpty()) {
+                    item {
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(
+                            text = "Reviews",
+                            style = typography.h5,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(5.dp))
+                    }
+                }
+
+                items(reviews) { review ->
+                    ReviewItemUi(review!!)
                 }
             }
         }

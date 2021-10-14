@@ -5,6 +5,7 @@ buildscript {
         coroutines_version = '1.5.2'
         hilt_version = '2.38.1'
         retrofit_version = '2.9.0'
+        paging_version = '1.0.0-alpha13'
     }
     repositories {
         google()

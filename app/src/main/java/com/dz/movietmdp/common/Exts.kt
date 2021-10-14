@@ -12,3 +12,10 @@ fun String?.toDateFormat(): String {
     }
     return ""
 }
+
+fun String.reviewDateFormat(): String {
+    val oldFormat = SimpleDateFormat("yyyy-MM-dd")
+    val oldDate = oldFormat.parse(this.split("T")[0]) ?: Date()
+    val newFormat = SimpleDateFormat("MMMMM dd, yyyy")
+    return newFormat.format(oldDate)
+}
