@@ -8,8 +8,6 @@ data class KnownFor(
     val adult: Boolean,
     @SerializedName("backdrop_path")
     val backdropPath: String?,
-    @SerializedName("genre_ids")
-    val genreIds: List<Double>,
     val id: Double,
     @SerializedName("media_type")
     val mediaType: String,
