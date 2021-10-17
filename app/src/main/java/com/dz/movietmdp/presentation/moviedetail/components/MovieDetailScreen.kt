@@ -113,6 +113,24 @@ fun MovieDetailScreen(
                     }
                 }
 
+                item {
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Text(
+                        text = "Directing by",
+                        style = typography.h5,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    val director = movie.director
+                    ActorItemUi(
+                        actor = director,
+                        onClickItem = {
+                            navController.navigate(Screen.ActorDetailScreen.route + "/${director.id},${director.creditId}")
+                        }
+                    )
+                    Spacer(modifier = Modifier.width(3.dp))
+                }
+
                 if (reviews.itemSnapshotList.isNotEmpty()) {
                     item {
                         Spacer(modifier = Modifier.height(5.dp))

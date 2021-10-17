@@ -1,5 +1,7 @@
 package com.dz.movietmdp.data.remote.dto
 
+import com.dz.movietmdp.common.Constants
+import com.dz.movietmdp.domain.model.Actor
 import com.google.gson.annotations.SerializedName
 
 data class Crew(
@@ -19,3 +21,12 @@ data class Crew(
     @SerializedName("profile_path")
     val profilePath: String?
 )
+
+fun Crew.toActor(): Actor =
+    Actor(
+        id = id,
+        creditId = creditId,
+        name = name,
+        character = "Director",
+        profilePath = if (profilePath != null) "${Constants.IMG_SOURCE_URL}$profilePath" else null
+    )
