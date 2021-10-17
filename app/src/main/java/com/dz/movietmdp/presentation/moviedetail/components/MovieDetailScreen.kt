@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -85,7 +86,6 @@ fun MovieDetailScreen(
                             }
                         }
                     }
-                    Spacer(modifier = Modifier.height(10.dp))
                     Overview(movieDetail = movie)
                 }
                 item {
@@ -114,21 +114,22 @@ fun MovieDetailScreen(
                 }
 
                 item {
-                    Spacer(modifier = Modifier.height(5.dp))
-                    Text(
-                        text = "Directing by",
-                        style = typography.h5,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.height(5.dp))
-                    val director = movie.director
-                    ActorItemUi(
-                        actor = director,
-                        onClickItem = {
-                            navController.navigate(Screen.ActorDetailScreen.route + "/${director.id},${director.creditId}")
-                        }
-                    )
-                    Spacer(modifier = Modifier.width(3.dp))
+                    movie.director?.let { director ->
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(
+                            text = "Directing by",
+                            style = typography.h5,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(5.dp))
+                        ActorItemUi(
+                            actor = director,
+                            onClickItem = {
+                                navController.navigate(Screen.ActorDetailScreen.route + "/${director.id},${director.creditId}")
+                            }
+                        )
+                        Spacer(modifier = Modifier.width(3.dp))
+                    }
                 }
 
                 if (reviews.itemSnapshotList.isNotEmpty()) {
@@ -218,12 +219,20 @@ fun Cover(movieDetail: MovieDetail) {
                     val language = movieDetail.originalLanguage.uppercase()
                     val runtime = movieDetail.runtime.runTime()
                     val info = "$date ($language) . $runtime"
-                    Text(
-                        text = info,
-                        fontWeight = FontWeight.Medium,
-                        color = MatrixColor,
-                        fontSize = 14.sp
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        Text(
+                            text = info,
+                            fontWeight = FontWeight.Medium,
+                            color = MatrixColor,
+                            fontSize = 14.sp
+                        )
+                        MovieRating(movieDetail = movieDetail)
+                    }
+
                 }
             }
         }
@@ -236,40 +245,20 @@ fun Overview(movieDetail: MovieDetail) {
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End,
-            modifier = Modifier
-                .background(
-                    color = YellowAlpha,
-                    shape = RoundedCornerShape(80.dp)
-                )
-                .padding(horizontal = 8.dp, vertical = 2.dp)
-        ) {
-            Text(
-                text = "${movieDetail.voteAverage}",
-                fontWeight = FontWeight.Bold,
-                color = Color.Yellow,
-                fontSize = 20.sp
-            )
-            Spacer(modifier = Modifier.width(5.dp))
-            val rating = (movieDetail.voteAverage / 2).toInt()
-            for (i in 1..rating) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_twotone_star_24),
-                    contentDescription = "",
-                    colorFilter = ColorFilter.tint(Color.Yellow),
-                    modifier = Modifier.size(20.dp)
-                )
-            }
-        }
         movieDetail.overview?.let { overview ->
             Spacer(modifier = Modifier.height(5.dp))
-            Text(
-                text = "Overview",
-                style = typography.h5,
-                fontWeight = FontWeight.Bold
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Overview",
+                    style = typography.h5,
+                    fontWeight = FontWeight.Bold
+                )
+                PlayTrailer(movieDetail.trailer)
+            }
             Spacer(modifier = Modifier.height(5.dp))
             Text(
                 text = overview,
@@ -291,6 +280,66 @@ fun Overview(movieDetail: MovieDetail) {
                 }
             )
             Spacer(modifier = Modifier.height(5.dp))
+        }
+    }
+}
+
+@Composable
+fun MovieRating(movieDetail: MovieDetail) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.End,
+    ) {
+        Text(
+            text = "${movieDetail.voteAverage}",
+            fontWeight = FontWeight.Bold,
+            color = Color.Yellow,
+            fontSize = 14.sp
+        )
+        Spacer(modifier = Modifier.width(5.dp))
+        val rating = (movieDetail.voteAverage / 2).toInt()
+        for (i in 1..rating) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_twotone_star_24),
+                contentDescription = "",
+                colorFilter = ColorFilter.tint(Color.Yellow),
+                modifier = Modifier.size(14.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun PlayTrailer(trailer: String) {
+    if (trailer.isNotBlank()) {
+        val context = LocalContext.current
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier
+                .border(
+                    width = 1.dp,
+                    color = Color.White,
+                    shape = RoundedCornerShape(100.dp)
+                )
+                .padding(5.dp)
+                .clickable {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(trailer))
+                    startActivity(context, intent, null)
+                }
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_baseline_play_arrow_24),
+                contentDescription = "",
+                colorFilter = ColorFilter.tint(Color.White),
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.width(5.dp))
+            Text(
+                text = "Play trailer",
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
         }
     }
 }

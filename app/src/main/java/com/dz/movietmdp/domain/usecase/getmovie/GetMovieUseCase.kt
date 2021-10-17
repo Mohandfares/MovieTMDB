@@ -3,6 +3,7 @@ package com.dz.movietmdp.domain.usecase.getmovie
 import com.dz.movietmdp.common.Resource
 import com.dz.movietmdp.data.remote.dto.toActor
 import com.dz.movietmdp.data.remote.dto.toMovieDetail
+import com.dz.movietmdp.domain.model.Actor
 import com.dz.movietmdp.domain.model.MovieDetail
 import com.dz.movietmdp.domain.repository.MoviesRepository
 import kotlinx.coroutines.flow.Flow
@@ -18,9 +19,24 @@ class GetMovieUseCase @Inject constructor(
         try {
             emit(Resource.Loading<MovieDetail>())
             val movieCredits = repository.getMovieCredits(movieId)
-            val actors = movieCredits.cast.map { it.toActor() }
-            val director = movieCredits.crew.first { it.department == "Directing" }.toActor()
-            val movie = repository.getMovie(movieId).toMovieDetail(actors,director)
+            val actors = try {
+                movieCredits.cast.map { it.toActor() }
+            } catch (e: Exception) {
+                emptyList()
+            }
+            val director = try {
+                movieCredits.crew.first { it.department == "Directing" }.toActor()
+            } catch (e: Exception) {
+                null
+            }
+            val videos = repository.getMovieTrailer(movieId)
+            val trailer = try {
+                val trailerKey = videos.results.first { it.official && it.site == "YouTube" }.key
+                "https://www.youtube.com/watch?v=$trailerKey"
+            } catch (e: Exception) {
+                ""
+            }
+            val movie = repository.getMovie(movieId).toMovieDetail(actors,director,trailer)
             emit(Resource.Success<MovieDetail>(movie))
         } catch (e: HttpException) {
             emit(Resource.Error<MovieDetail>(e.localizedMessage ?: "An unexpected error"))

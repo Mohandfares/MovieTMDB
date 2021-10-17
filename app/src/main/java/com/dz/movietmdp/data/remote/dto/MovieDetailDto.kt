@@ -45,7 +45,11 @@ data class MovieDetailDto(
     val voteCount: Int
 )
 
-fun MovieDetailDto.toMovieDetail(actors: List<Actor>,director: Actor): MovieDetail =
+fun MovieDetailDto.toMovieDetail(
+    actors: List<Actor>,
+    director: Actor?,
+    trailer: String
+): MovieDetail =
     MovieDetail(
         id = id,
         backdropPath =  if (backdropPath != null) "${Constants.IMG_SOURCE_URL}$backdropPath" else null,
@@ -70,5 +74,6 @@ fun MovieDetailDto.toMovieDetail(actors: List<Actor>,director: Actor): MovieDeta
         voteAverage = voteAverage,
         voteCount = voteCount,
         actors = actors,
-        director = director
+        director = director,
+        trailer = trailer
     )

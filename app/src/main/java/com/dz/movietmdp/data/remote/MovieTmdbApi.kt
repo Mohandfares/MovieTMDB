@@ -49,6 +49,10 @@ interface MovieTmdbApi {
     ): ReviewsDto
 
     @Headers("Authorization: Bearer ${Constants.ApiAccessToken}")
+    @GET("movie/{movieId}/videos")
+    suspend fun getMovieTrailer(@Path("movieId") movieId: String): TrailersDto
+
+    @Headers("Authorization: Bearer ${Constants.ApiAccessToken}")
     @GET("credit/{creditId}")
     suspend fun getCredit(@Path("creditId") creditId: String): CreditDetailDto
 
